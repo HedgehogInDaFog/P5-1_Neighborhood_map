@@ -7,8 +7,25 @@
 </head>
 <body>
     <div id="map"></div>
+    <div class="abs-container">
+        <div class="container">
+            <div class="items-box">
+                <div id="main-label">
+                    <h2>Cities to visit</h2>
+                </div>
+                <div class="search">
+                    <input type="text" id="search-string" value="Search...">
+                </div>
+                <ul class="cities"></ul>
+            </div>
+        </div>
+    </div>
+
+
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBDOMBD_s9QjgaJ9dYsB9HqjqlBvst6CI&callback=initMap"></script>
     <script src="js/lib/knockout-3.4.0.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/view.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
