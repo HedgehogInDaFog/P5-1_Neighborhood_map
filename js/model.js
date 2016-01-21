@@ -2,20 +2,32 @@ var mapData = {
 	mapCenter : {
     	position : {
     		lat : 56.236575,
-    		lng : 37.809103
+    		lng : 36.609103
     	},
     	zoom : 8
     },
 
     markers : [
     	{
-			position : {lat: 56.236575, lng : 37.809103},
-    		title : "Marker #1"
+			position : {lat: 56.307384, lng : 38.15088},
+    		title : "Sergiyev Posad"
     	},
     	{
-			position : { lat: 57.236575, lng : 38.809103},
-    		title : "Marker #2"
+			position : { lat: 56.165470, lng : 40.402882},
+    		title : "Vladimir"
     	},
+        {
+            position : { lat: 56.416168, lng : 40.453777},
+            title : "Suzdal"
+        },
+        {
+            position : { lat: 55.603643, lng : 40.653872},
+            title : "Gus-Khrustalny"
+        },
+        {
+            position : { lat: 56.736716, lng : 38.882745},
+            title : "Pereslavl-Zalessky "
+        }
 
     ]
 };

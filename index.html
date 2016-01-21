@@ -16,7 +16,10 @@
                 <div class="search">
                     <input type="text" id="search-string" value="Search...">
                 </div>
-                <ul class="cities"></ul>
+                <ul class="cities" data-bind="foreach: markerList">
+                    <li class="cities-item" data-bind="text: title, click: $parent.doNothing"></li>
+                    <hr>
+                </ul>
             </div>
         </div>
     </div>
