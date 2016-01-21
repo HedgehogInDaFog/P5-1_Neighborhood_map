@@ -14,10 +14,11 @@ body {
 
 h2 {
     font-size: 24px;
-    color: #243899;
+    color: white;
     margin: 4px;
     text-align: center;
     text-transform: uppercase;
+    letter-spacing:1.2px;
 }
 
 
@@ -25,7 +26,9 @@ h2 {
     position: absolute;
     left: 0px;
     top: 0px;
-    width: 100%;
+    width: 25%;
+    max-width: 600px;
+    min-width: 150px;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -36,18 +39,19 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     margin-right: auto;
-    max-width: 1200px;
+    max-width: 600px;
+    min-width: 150px;
     width: 100%;
 }
 
 .items-box {
     background-color: #0A0F29;
-    width: 20%;
-    min-width: 200px;
-    max-width: 400px;
+    width: 100%;
+    min-width: 150px;
+    max-width: 600px;
     height: 100%;
     border-radius: 20px;
-    opacity: 0.9;
+    opacity: 0.8;
     align-items: center;
     justify-content: center;
 
@@ -66,9 +70,19 @@ h2 {
 #search-string {
     width: 100%;
     border-radius: 20px;
-
 }
+
 
 #map {
     height: 100%;
 }
+
+@media screen and (max-width: 900px) {
+    h2 {
+        font-size: 18px;
+    }
+
+@media screen and (max-width: 700px) {
+    h2 {
+        font-size: 14px;
+    }
