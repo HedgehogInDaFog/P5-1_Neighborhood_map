@@ -18,7 +18,7 @@ var googleSuccess = function() {
         this.searchString = ko.observable("Search...");
 
         this.doNothing = function() {
-            console.log("nothing dune")
+            console.log("nothing done")
         };
 
         this.clearOnFirstClick = function() {
@@ -28,9 +28,18 @@ var googleSuccess = function() {
         };
 
         this.filterLocations = function() {
-            console.log("filter")
-        };
+            //filter list of items
+            var str = this.searchString().toLowerCase();
+            var tmpArray = [];
+            for (var i = 0; i < generalMapData.markers.length; i++) {
+                if (generalMapData.markers[i].title.toLowerCase().indexOf(str) != -1) {
+                    tmpArray.push(generalMapData.markers[i]);
+                }
+            }
+            this.markerList(tmpArray);
 
+            //filter markers
+        };
 
         this.initMap = function(mapCenter, markerList) {
             var map = new google.maps.Map(document.getElementById('map'), {
