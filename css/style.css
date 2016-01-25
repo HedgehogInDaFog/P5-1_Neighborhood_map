@@ -63,7 +63,7 @@ h2 {
 }
 
 .search {
-    background-color: #D3D8F3;
+    background-color: #C3C8E3;
     width: 95%;
     border-radius: 10px;
     margin-left: auto;
@@ -71,12 +71,20 @@ h2 {
 
 }
 
-#main-label,
-#search-string {
+#main-label {
     width: 100%;
     border-radius: 20px;
 }
 
+#search-string {
+    width: 90%;
+    border-radius: 20px;
+}
+
+#search-clear {
+    text-align: center;
+    width: 10%;
+}
 
 #map {
     height: 100%;

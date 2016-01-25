@@ -8,56 +8,77 @@ var googleSuccess = function() {
     var ViewModel = function() {
 
         var self = this;
-        this.mapCenter = ko.observable(generalMapData.mapCenter);
+        this.map;
         this.markerList = ko.observableArray([]);
-
-        generalMapData.markers.forEach(function(markerItem){
-            self.markerList.push(markerItem);
-        });
+        this.currentMarkerList = ko.observableArray([]);
 
         this.searchString = ko.observable("Search...");
 
-        this.doNothing = function() {
-            console.log("nothing done")
+        this.createMarker = function(location, title) {
+          var marker = new google.maps.Marker({
+            position: location,
+            map: this.map,
+            title: title
+          });
+          return marker;
+        };
+
+        this.itemClick = function() {
+            self.searchString(this.title);
+            this.filterLocations();
         };
 
         this.clearOnFirstClick = function() {
             if (this.searchString() == "Search...") {
                 this.searchString("");
             }
+            this.filterLocations();
+        };
+
+        this.clearSearch = function() {
+                this.searchString("");
+                this.filterLocations();
         };
 
         this.filterLocations = function() {
+
+            function setMapOnAll(map, markers) {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+            };
             //filter list of items
             var str = this.searchString().toLowerCase();
             var tmpArray = [];
-            for (var i = 0; i < generalMapData.markers.length; i++) {
-                if (generalMapData.markers[i].title.toLowerCase().indexOf(str) != -1) {
-                    tmpArray.push(generalMapData.markers[i]);
+            for (var i = 0; i < this.markerList().length; i++) {
+                if (this.markerList()[i].title.toLowerCase().indexOf(str) != -1) {
+                    tmpArray.push(this.markerList()[i]);
                 }
             }
-            this.markerList(tmpArray);
+            this.currentMarkerList(tmpArray);
 
             //filter markers
+            setMapOnAll(null, this.markerList());
+            setMapOnAll(this.map, this.currentMarkerList());
+
         };
 
-        this.initMap = function(mapCenter, markerList) {
-            var map = new google.maps.Map(document.getElementById('map'), {
+        this.initMap = function(mapCenter, markers) {
+            this.map = new google.maps.Map(document.getElementById('map'), {
                 center: mapCenter.position,
                 zoom: mapCenter.zoom
             });
 
-            len = markerList.length;
+            len = markers.length;
+            var tmpArray = [];
             for (var i = 0; i < len; i++) {
-                new google.maps.Marker({
-                    position: markerList[i].position,
-                    map: map,
-                    title: markerList[i].title
-                });
+                 tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
             }
+            this.markerList(tmpArray);
+            this.currentMarkerList(tmpArray);
         };
 
-        this.initMap(this.mapCenter(), this.markerList());
+        this.initMap(generalMapData.mapCenter, generalMapData.markers);
 
     };
 
