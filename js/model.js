@@ -2,7 +2,7 @@ var generalMapData = {
 	mapCenter : {
     	position : {
     		lat : 56.236575,
-    		lng : 36.609103
+    		lng : 37.909103
     	},
     	zoom : 8
     },

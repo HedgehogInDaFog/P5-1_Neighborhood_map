@@ -24,20 +24,21 @@ var googleSuccess = function() {
         };
 
         this.itemClick = function() {
-            self.searchString(this.title);
-            this.filterLocations();
+            //TODO
+            //self.searchString(this.title);
+            //self.filterLocations();
         };
 
         this.clearOnFirstClick = function() {
             if (this.searchString() == "Search...") {
                 this.searchString("");
             }
-            this.filterLocations();
+            self.filterLocations();
         };
 
-        this.clearSearch = function() {
+        var clearSearch = function() {
                 this.searchString("");
-                this.filterLocations();
+                self.filterLocations();
         };
 
         this.filterLocations = function() {
