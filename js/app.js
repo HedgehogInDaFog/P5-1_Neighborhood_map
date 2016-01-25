@@ -18,15 +18,23 @@ var googleSuccess = function() {
           var marker = new google.maps.Marker({
             position: location,
             map: this.map,
-            title: title
+            title: title,
+            animation: google.maps.Animation.DROP
           });
+          marker.addListener('click', self.markerClick);
           return marker;
         };
 
         this.itemClick = function() {
+            console.log("itemClick done");
             //TODO
             //self.searchString(this.title);
             //self.filterLocations();
+        };
+
+        this.markerClick = function () {
+            console.log("markerClick done");
+            //TODO
         };
 
         this.clearOnFirstClick = function() {
