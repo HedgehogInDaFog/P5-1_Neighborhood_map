@@ -36,7 +36,7 @@ var googleSuccess = function() {
             self.filterLocations();
         };
 
-        var clearSearch = function() {
+        this.clearSearch = function() {
                 this.searchString("");
                 self.filterLocations();
         };
