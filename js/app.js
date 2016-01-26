@@ -12,7 +12,35 @@ var googleSuccess = function() {
         this.markerList = ko.observableArray([]);
         this.currentMarkerList = ko.observableArray([]);
 
-        this.searchString = ko.observable("Search...");
+        this.searchString = ko.observable('');
+
+        this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
+        '<div class="full-width"><p>%WikiInfo%</p></div><div class="full-width"><img src=%Image% alt="city image"></img></div></div>';
+
+        this.getInfoFromWiki = function(request) {
+            var wikiRequestTimeout = setTimeout(function() {
+                console.log('Data from Wikipedia cannot be loaded');
+            }, 8000);
+
+            var urlWikiRequest = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + request + '&format=json&callback=wikiCallback';
+
+            $.ajax({
+                url : urlWikiRequest,
+                dataType: "jsonp",
+                success: function(data) {
+                    console.log(data[2]);
+                    clearTimeout(wikiRequestTimeout);
+                    return data[2];
+                }   
+            });
+
+        };
+
+        this.fillContentTemplate = function(template, marker) {
+            var wiki = this.getInfoFromWiki(marker.title);
+            var result = template.replace('%Label%',marker.title).replace('%WikiInfo%',wiki);
+            return result;
+        };
 
         this.createMarker = function(location, title) {
           var marker = new google.maps.Marker({
@@ -34,14 +62,12 @@ var googleSuccess = function() {
 
         this.markerClick = function () {
             console.log("markerClick done");
+            var contentString = self.fillContentTemplate(self.contentStringTemplate, this);
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+            infowindow.open(self.map, this);   
             //TODO
-        };
-
-        this.clearOnFirstClick = function() {
-            if (this.searchString() == "Search...") {
-                this.searchString("");
-            }
-            self.filterLocations();
         };
 
         this.clearSearch = function() {
