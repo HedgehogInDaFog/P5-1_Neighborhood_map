@@ -15,30 +15,33 @@ var googleSuccess = function() {
         this.searchString = ko.observable('');
 
         this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
-        '<div class="full-width"><p>%WikiInfo%</p></div><div class="full-width"><img src=%Image% alt="city image"></img></div></div>';
+        '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div><div class="full-width"><img src=%Image% alt="city image"></img></div></div>';
 
-        this.getInfoFromWiki = function(request) {
+        this.getInfoFromWiki = function() {
+
+            var urlWikiRequest = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=%request%&format=json&callback=wikiCallback';
+
             var wikiRequestTimeout = setTimeout(function() {
                 console.log('Data from Wikipedia cannot be loaded');
+                //TODO
             }, 8000);
 
-            var urlWikiRequest = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + request + '&format=json&callback=wikiCallback';
+            self.markerList().forEach (function (marker) {
+                $.ajax({
+                    url : urlWikiRequest.replace('%request%', marker.title),
+                    dataType: "jsonp",
+                    success: function(data) {
+                        clearTimeout(wikiRequestTimeout);
+                        marker.wikiData = data;
+                    }
+                });
 
-            $.ajax({
-                url : urlWikiRequest,
-                dataType: "jsonp",
-                success: function(data) {
-                    console.log(data[2]);
-                    clearTimeout(wikiRequestTimeout);
-                    return data[2];
-                }   
             });
-
         };
 
         this.fillContentTemplate = function(template, marker) {
-            var wiki = this.getInfoFromWiki(marker.title);
-            var result = template.replace('%Label%',marker.title).replace('%WikiInfo%',wiki);
+            var result = template.replace('%Label%',marker.title).replace('%WikiInfo%', marker.wikiData[2][0]).replace('%WikiLinkText%', marker.wikiData[1][0]);
+            result = result.replace('%WikiLinkLoc%', marker.wikiData[3][0]);
             return result;
         };
 
@@ -61,12 +64,12 @@ var googleSuccess = function() {
         };
 
         this.markerClick = function () {
-            console.log("markerClick done");
             var contentString = self.fillContentTemplate(self.contentStringTemplate, this);
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
             });
-            infowindow.open(self.map, this);   
+            infowindow.open(self.map, this);
+
             //TODO
         };
 
@@ -110,6 +113,7 @@ var googleSuccess = function() {
                  tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
             }
             this.markerList(tmpArray);
+            this.getInfoFromWiki();
             this.currentMarkerList(tmpArray);
         };
 
