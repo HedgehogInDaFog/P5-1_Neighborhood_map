@@ -1,3 +1,4 @@
+
 var googleError = function() {
     /*TODO*/
     console.log("Google Map Load Error");
@@ -15,7 +16,10 @@ var googleSuccess = function() {
         this.searchString = ko.observable('');
 
         this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
-        '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div><div class="full-width"><img src=%Image% alt="city image"></img></div></div>';
+        '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div>' + 
+        '<div class="full-width"><img class="image-flickr" src=%Image0% alt="city image"></img>' + 
+        '<img class="image-flickr" src=%Image1% alt="city image"></img>' + 
+        '<img class="image-flickr" src=%Image2% alt="city image"></img></div></div>';
 
         this.getInfoFromWiki = function() {
 
@@ -39,9 +43,41 @@ var googleSuccess = function() {
             });
         };
 
+        this.getInfoFromFlickr = function() {
+
+            var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' + 
+            '&tags=sightseeing,beauty,church,monument,square,nature,city&sort=interestingness-desc&per_page=3&content_type=1&' + 
+            'media=photos&nojsoncallback=1&format=json&lat=%lat%&lon=%lon%';
+
+            var urlFlirckImageTemplate = 'https://farm%farm-id%.staticflickr.com/%server-id%/%id%_%secret%_q.jpg';
+
+            var flickrRequestTimeout = setTimeout(function() {
+                console.log('Data from flickr cannot be loaded');
+                //TODO
+            }, 8000);
+
+            self.markerList().forEach (function (marker) {
+                $.ajax({
+                    url : urlFlickrRequest.replace('%lat%',marker.position.lat).replace('%lon%',marker.position.lng),
+                    success: function(data) {
+                        clearTimeout(flickrRequestTimeout);
+                        marker.flickrData = [];
+                        console.log(urlFlickrRequest.replace('%lat%',marker.position.lat).replace('%lon%',marker.position.lng));
+                        for (var k = 0; k < 3; k++) {
+                            var tmp = data.photos.photo[k];
+                            marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
+                            marker.flickrData[k] = marker.flickrData[k].replace('%id%',tmp.id).replace('%secret%',tmp.secret);
+                        }
+                    }
+                });
+
+            });
+        };
+
         this.fillContentTemplate = function(template, marker) {
             var result = template.replace('%Label%',marker.title).replace('%WikiInfo%', marker.wikiData[2][0]).replace('%WikiLinkText%', marker.wikiData[1][0]);
-            result = result.replace('%WikiLinkLoc%', marker.wikiData[3][0]);
+            result = result.replace('%WikiLinkLoc%', marker.wikiData[3][0]).replace('%Image0%',marker.flickrData[0]).replace('%Image1%',marker.flickrData[1]);
+            result = result.replace('%Image2%',marker.flickrData[2])
             return result;
         };
 
@@ -58,6 +94,7 @@ var googleSuccess = function() {
 
         this.itemClick = function() {
             console.log("itemClick done");
+            console.log(self.markerList()[0].flickrData);
             //TODO
             //self.searchString(this.title);
             //self.filterLocations();
@@ -114,6 +151,7 @@ var googleSuccess = function() {
             }
             this.markerList(tmpArray);
             this.getInfoFromWiki();
+            this.getInfoFromFlickr();
             this.currentMarkerList(tmpArray);
         };
 
