@@ -15,11 +15,30 @@ var googleSuccess = function() {
         this.searchString = ko.observable('');
         this.infoWindowsOpened = [];
 
+        this.hideButton = ko.observable('▲'); //▼
+
         this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
-        '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div>' + 
-        '<div class="full-width"><img class="image-flickr" src=%Image0% alt="city image"></img>' + 
-        '<img class="image-flickr" src=%Image1% alt="city image"></img>' + 
+        '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div>' +
+        '<div class="full-width"><img class="image-flickr" src=%Image0% alt="city image"></img>' +
+        '<img class="image-flickr" src=%Image1% alt="city image"></img>' +
         '<img class="image-flickr" src=%Image2% alt="city image"></img></div></div>';
+
+        this.hideButtonClick = function() {
+            var toggleHideButton = function () {
+                if (self.hideButton() == '▲') {
+                    self.hideButton('▼');
+                    var absCont = $('#main-container');
+                    var deltaY = absCont.offset().top - absCont.height() + 20;
+                    absCont.offset({ top: deltaY, left: 0 });
+                } else {
+                    self.hideButton('▲');
+                    var absCont = $('#main-container');
+                    var deltaY = absCont.offset().top + absCont.height() - 20;
+                    absCont.offset({ top: deltaY, left: 0 });
+                }
+            }
+            toggleHideButton();
+        };
 
         this.getInfoFromWiki = function(markers) {
 
@@ -45,8 +64,8 @@ var googleSuccess = function() {
 
         this.getInfoFromFlickr = function(markers) {
 
-            var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' + 
-            '&tags=sightseeing,beauty,church,monument,square,nature,city&sort=interestingness-desc&per_page=3&content_type=1&' + 
+            var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' +
+            '&tags=sightseeing,beauty,church,monument,square,nature,city&sort=interestingness-desc&per_page=3&content_type=1&' +
             'media=photos&nojsoncallback=1&format=json&lat=%lat%&lon=%lon%';
 
             var urlFlirckImageTemplate = 'https://farm%farm-id%.staticflickr.com/%server-id%/%id%_%secret%_q.jpg';
@@ -102,7 +121,7 @@ var googleSuccess = function() {
 
             marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function() {marker.setAnimation(null);}, 2000);
-            
+
             var contentString = fillContentTemplate(self.contentStringTemplate, marker);
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
@@ -151,8 +170,8 @@ var googleSuccess = function() {
                  tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
             }
             self.markerList(tmpArray);
-            self.getInfoFromWiki(self.markerList());
-            self.getInfoFromFlickr(self.markerList());
+            //self.getInfoFromWiki(self.markerList());
+            //self.getInfoFromFlickr(self.markerList());
             self.currentMarkerList(tmpArray);
         };
 

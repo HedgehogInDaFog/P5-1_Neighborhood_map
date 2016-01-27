@@ -18,7 +18,7 @@ h2 {
     margin: 4px;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing:1.2px;
+    letter-spacing:1.5px;
 }
 
 
@@ -82,7 +82,7 @@ h2 {
 }
 
 .search {
-    background-color: #C3C8E3;
+    background-color: #4A4F69;
     width: 95%;
     border-radius: 10px;
     margin-left: auto;
@@ -102,12 +102,25 @@ h2 {
 
 #search-clear {
     width: 15px;
-    height: 15px;   
+    height: 15px;
     margin: auto;
 }
 
 #map {
     height: 100%;
+}
+
+#hide-button {
+    width: 35px;
+    height: 40px;
+    margin-bottom: -20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #4A4F69;
+    color: white;
+    text-align: center;
+    font-size: 32px;
+    opacity: 1;
 }
 
 @media screen and (max-width: 900px) {
@@ -117,7 +130,7 @@ h2 {
 }
 
 @media screen and (max-width: 700px) {
-    h2, 
+    h2,
     .cities-item-button,
     .cities-item  {
         font-size: 14px;
