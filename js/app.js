@@ -12,7 +12,6 @@ var googleSuccess = function() {
         this.map;
         this.markerList = ko.observableArray([]);
         this.currentMarkerList = ko.observableArray([]);
-
         this.searchString = ko.observable('');
 
         this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
@@ -21,7 +20,7 @@ var googleSuccess = function() {
         '<img class="image-flickr" src=%Image1% alt="city image"></img>' + 
         '<img class="image-flickr" src=%Image2% alt="city image"></img></div></div>';
 
-        this.getInfoFromWiki = function() {
+        this.getInfoFromWiki = function(markers) {
 
             var urlWikiRequest = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=%request%&format=json&callback=wikiCallback';
 
@@ -30,7 +29,7 @@ var googleSuccess = function() {
                 //TODO
             }, 8000);
 
-            self.markerList().forEach (function (marker) {
+            markers.forEach (function (marker) {
                 $.ajax({
                     url : urlWikiRequest.replace('%request%', marker.title),
                     dataType: "jsonp",
@@ -43,7 +42,7 @@ var googleSuccess = function() {
             });
         };
 
-        this.getInfoFromFlickr = function() {
+        this.getInfoFromFlickr = function(markers) {
 
             var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' + 
             '&tags=sightseeing,beauty,church,monument,square,nature,city&sort=interestingness-desc&per_page=3&content_type=1&' + 
@@ -56,13 +55,12 @@ var googleSuccess = function() {
                 //TODO
             }, 8000);
 
-            self.markerList().forEach (function (marker) {
+            markers.forEach (function (marker) {
                 $.ajax({
                     url : urlFlickrRequest.replace('%lat%',marker.position.lat).replace('%lon%',marker.position.lng),
                     success: function(data) {
                         clearTimeout(flickrRequestTimeout);
                         marker.flickrData = [];
-                        console.log(urlFlickrRequest.replace('%lat%',marker.position.lat).replace('%lon%',marker.position.lng));
                         for (var k = 0; k < 3; k++) {
                             var tmp = data.photos.photo[k];
                             marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
@@ -70,15 +68,7 @@ var googleSuccess = function() {
                         }
                     }
                 });
-
             });
-        };
-
-        this.fillContentTemplate = function(template, marker) {
-            var result = template.replace('%Label%',marker.title).replace('%WikiInfo%', marker.wikiData[2][0]).replace('%WikiLinkText%', marker.wikiData[1][0]);
-            result = result.replace('%WikiLinkLoc%', marker.wikiData[3][0]).replace('%Image0%',marker.flickrData[0]).replace('%Image1%',marker.flickrData[1]);
-            result = result.replace('%Image2%',marker.flickrData[2])
-            return result;
         };
 
         this.createMarker = function(location, title) {
@@ -88,30 +78,31 @@ var googleSuccess = function() {
             title: title,
             animation: google.maps.Animation.DROP
           });
-          marker.addListener('click', self.markerClick);
+          marker.addListener('click', function () {self.markerClick(marker);});
           return marker;
         };
 
         this.itemClick = function() {
-            console.log("itemClick done");
-            console.log(self.markerList()[0].flickrData);
-            //TODO
-            //self.searchString(this.title);
-            //self.filterLocations();
+            self.markerClick(this);
         };
 
-        this.markerClick = function () {
-            this.setAnimation(google.maps.Animation.BOUNCE);
-            console.log("t1");
-            var tmp = this;
-            setTimeout(function() {tmp.setAnimation(null);}, 2000);
+        this.markerClick = function (marker) {
+
+            var fillContentTemplate = function(template, marker) {
+                var result = template.replace('%Label%',marker.title).replace('%WikiInfo%', marker.wikiData[2][0]);
+                result = result.replace('%WikiLinkText%', marker.wikiData[1][0]).replace('%WikiLinkLoc%', marker.wikiData[3][0]);
+                result = result.replace('%Image0%',marker.flickrData[0]).replace('%Image1%',marker.flickrData[1]).replace('%Image2%',marker.flickrData[2]);
+                return result;
+            };
+
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function() {marker.setAnimation(null);}, 2000);
             
-            var contentString = self.fillContentTemplate(self.contentStringTemplate, this);
+            var contentString = fillContentTemplate(self.contentStringTemplate, marker);
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
             });
-            infowindow.open(self.map, this);
-            //TODO
+            infowindow.open(self.map, marker);
         };
 
         this.clearSearch = function() {
@@ -153,10 +144,10 @@ var googleSuccess = function() {
             for (var i = 0; i < len; i++) {
                  tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
             }
-            this.markerList(tmpArray);
-            this.getInfoFromWiki();
-            this.getInfoFromFlickr();
-            this.currentMarkerList(tmpArray);
+            self.markerList(tmpArray);
+            self.getInfoFromWiki(self.markerList());
+            self.getInfoFromFlickr(self.markerList());
+            self.currentMarkerList(tmpArray);
         };
 
         this.initMap(generalMapData.mapCenter, generalMapData.markers);
