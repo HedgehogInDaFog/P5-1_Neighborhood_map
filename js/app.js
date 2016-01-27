@@ -13,6 +13,7 @@ var googleSuccess = function() {
         this.markerList = ko.observableArray([]);
         this.currentMarkerList = ko.observableArray([]);
         this.searchString = ko.observable('');
+        this.infoWindowsOpened = [];
 
         this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
         '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div>' + 
@@ -95,6 +96,10 @@ var googleSuccess = function() {
                 return result;
             };
 
+            self.infoWindowsOpened.forEach(function(infowindow) {
+                infowindow.close();
+            });
+
             marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function() {marker.setAnimation(null);}, 2000);
             
@@ -103,6 +108,7 @@ var googleSuccess = function() {
                 content: contentString
             });
             infowindow.open(self.map, marker);
+            self.infoWindowsOpened.push(infowindow);
         };
 
         this.clearSearch = function() {

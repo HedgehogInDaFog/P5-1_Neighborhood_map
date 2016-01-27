@@ -15,11 +15,13 @@
                 </div>
                 <div class="search container">
                     <input type="text" id="search-string" placeholder="Search..." data-bind="textInput: searchString, event: { 'keyup': filterLocations }">
-                    <div id="search-clear" data-bind="click: clearSearch">X</div>
+                    <img src="images/icon-1.png" id="search-clear" data-bind="click: clearSearch"></img>
                 </div>
-                <ul class="cities" data-bind="foreach: currentMarkerList">
+                <ul class="cities container" data-bind="foreach: currentMarkerList">
                     <li class="cities-item" data-bind="text: title, click: $parent.itemClick"></li>
-                    <hr>
+                    <div class="cities-item-button">★</div>
+                    <div class="cities-item-button">➘</div>
+                    <hr class="full-width">
                 </ul>
             </div>
         </div>
