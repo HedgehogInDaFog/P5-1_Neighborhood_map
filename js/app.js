@@ -101,12 +101,16 @@ var googleSuccess = function() {
         };
 
         this.markerClick = function () {
+            this.setAnimation(google.maps.Animation.BOUNCE);
+            console.log("t1");
+            var tmp = this;
+            setTimeout(function() {tmp.setAnimation(null);}, 2000);
+            
             var contentString = self.fillContentTemplate(self.contentStringTemplate, this);
             var infowindow = new google.maps.InfoWindow({
                 content: contentString
             });
             infowindow.open(self.map, this);
-
             //TODO
         };
 
