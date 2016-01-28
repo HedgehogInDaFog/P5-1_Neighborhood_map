@@ -3,6 +3,7 @@
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
+    font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, Tahoma, sans-serif;
 }
 
 html,
@@ -93,6 +94,12 @@ h2 {
 #main-label {
     width: 100%;
     border-radius: 20px;
+}
+
+#main-container {
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
+    top: 0;
 }
 
 #search-string {
