@@ -65,10 +65,13 @@ var googleSuccess = function() {
         this.getInfoFromFlickr = function(markers) {
 
             var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' +
-            '&tags=sightseeing,beauty,church,monument,square,nature,city&sort=interestingness-desc&per_page=3&content_type=1&' +
+            '&tags=%tags%&sort=interestingness-desc&per_page=5&content_type=1&' +
             'media=photos&nojsoncallback=1&format=json&lat=%lat%&lon=%lon%';
 
             var urlFlirckImageTemplate = 'https://farm%farm-id%.staticflickr.com/%server-id%/%id%_%secret%_q.jpg';
+
+            var tagList1 = 'church, monument, square, nature, city';
+            var tagList2 =  'architecture, museum, travel, flowers, holidays';
 
             var flickrRequestTimeout = setTimeout(function() {
                 console.log('Data from flickr cannot be loaded');
@@ -77,11 +80,26 @@ var googleSuccess = function() {
 
             markers.forEach (function (marker) {
                 $.ajax({
-                    url : urlFlickrRequest.replace('%lat%',marker.position.lat).replace('%lon%',marker.position.lng),
+                    url : urlFlickrRequest.replace('%lat%', marker.position.lat).replace('%lon%', marker.position.lng).replace('%tags%', tagList1),
                     success: function(data) {
                         clearTimeout(flickrRequestTimeout);
                         marker.flickrData = [];
-                        for (var k = 0; k < 3; k++) {
+                        for (var k = 0; k < 5; k++) {
+                            var tmp = data.photos.photo[k];
+                            marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
+                            marker.flickrData[k] = marker.flickrData[k].replace('%id%',tmp.id).replace('%secret%',tmp.secret);
+                        }
+                    }
+                });
+            });
+
+            markers.forEach (function (marker) {
+                $.ajax({
+                    url : urlFlickrRequest.replace('%lat%', marker.position.lat).replace('%lon%', marker.position.lng).replace('%tags%', tagList2),
+                    success: function(data) {
+                        clearTimeout(flickrRequestTimeout);
+                        marker.flickrData = [];
+                        for (var k = 5; k < 10; k++) {
                             var tmp = data.photos.photo[k];
                             marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
                             marker.flickrData[k] = marker.flickrData[k].replace('%id%',tmp.id).replace('%secret%',tmp.secret);
