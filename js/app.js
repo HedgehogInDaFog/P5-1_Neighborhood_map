@@ -53,29 +53,33 @@ var googleSuccess = function() {
 
             var forsquareData = self.getInfoFromForsquare(this.position);
 
-
+            console.log(forsquareData.length);
+            console.log(forsquareData[0]);
 
         };
 
         this.getInfoFromForsquare = function(position) {
 
-            var urlForsquareRequest = 'https://api.foursquare.com/v2/venues/explore?ll=%latlon%&limit=10&section=sights&venuePhotos=1&';
+            var urlForsquareRequest = 'https://api.foursquare.com/v2/venues/explore?client_id=D44GZQ3K2O41UJQVYY1LDOAKGAPS2WD0AARQD5LBN0CEJKXO&' +
+            'client_secret=GOGXNZ2IICLUCO00VVSK4HH2V5RWAITUUQZRXITGWLOLW0GT&ll=%latlng%&limit=10&section=sights&venuePhotos=1&v=20160130';
 
             var forsquareRequestTimeout = setTimeout(function() {
                 console.log('Data from Forsquare cannot be loaded');
                 //TODO
             }, 8000);
 
+            var forsquareData;
+
             $.ajax({
-                    url : urlForsquareRequest.replace('%latlon%', position.lat + ',' + position.lng),
+                    url : urlForsquareRequest.replace('%latlng%', position.lat + ',' + position.lng),
                     dataType: "jsonp",
                     success: function(data) {
                         clearTimeout(forsquareRequestTimeout);
-                        var forsquareData = data;
+                        return data;
                     }
             });
 
-            return forsquareData;
+            //return forsquareData.response.groups[0].items;
         };
 
         this.getInfoFromWiki = function(markers) {
