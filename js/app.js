@@ -1,3 +1,6 @@
+var flickrKey = 'Client id D44GZQ3K2O41UJQVYY1LDOAKGAPS2WD0AARQD5LBN0CEJKXO' +
+' Client secret GOGXNZ2IICLUCO00VVSK4HH2V5RWAITUUQZRXITGWLOLW0GT';
+
 
 var googleError = function() {
     /*TODO*/
@@ -10,10 +13,12 @@ var googleSuccess = function() {
 
         var self = this;
         this.map;
-        this.markerList = ko.observableArray([]);
+        this.generalMarkerList = ko.observableArray([]);
         this.currentMarkerList = ko.observableArray([]);
         this.searchString = ko.observable('');
         this.infoWindowsOpened = [];
+
+        this.mainLabel = ko.observable('Cities to visit');
 
         this.hideButton = ko.observable('▲'); //▼
 
@@ -38,6 +43,39 @@ var googleSuccess = function() {
                 }
             }
             toggleHideButton();
+        };
+
+        this.cityDetails = function() {
+            self.map.setZoom(14);
+            self.map.setCenter(this.position);
+
+            self.mainLabel(this.title);
+
+            var forsquareData = self.getInfoFromForsquare(this.position);
+
+
+
+        };
+
+        this.getInfoFromForsquare = function(position) {
+
+            var urlForsquareRequest = 'https://api.foursquare.com/v2/venues/explore?ll=%latlon%&limit=10&section=sights&venuePhotos=1&';
+
+            var forsquareRequestTimeout = setTimeout(function() {
+                console.log('Data from Forsquare cannot be loaded');
+                //TODO
+            }, 8000);
+
+            $.ajax({
+                    url : urlForsquareRequest.replace('%latlon%', position.lat + ',' + position.lng),
+                    dataType: "jsonp",
+                    success: function(data) {
+                        clearTimeout(forsquareRequestTimeout);
+                        var forsquareData = data;
+                    }
+            });
+
+            return forsquareData;
         };
 
         this.getInfoFromWiki = function(markers) {
@@ -65,13 +103,12 @@ var googleSuccess = function() {
         this.getInfoFromFlickr = function(markers) {
 
             var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' +
-            '&tags=%tags%&sort=interestingness-desc&per_page=5&content_type=1&' +
+            '&tags=%tags%&sort=relevance&per_page=5&content_type=1&' +
             'media=photos&nojsoncallback=1&format=json&lat=%lat%&lon=%lon%';
 
             var urlFlirckImageTemplate = 'https://farm%farm-id%.staticflickr.com/%server-id%/%id%_%secret%_q.jpg';
 
-            var tagList1 = 'church, monument, square, nature, city';
-            var tagList2 =  'architecture, museum, travel, flowers, holidays';
+            var tagList = 'church, monument, square, nature, architecture, museum, travel, flowers, holidays, city';
 
             var flickrRequestTimeout = setTimeout(function() {
                 console.log('Data from flickr cannot be loaded');
@@ -80,26 +117,11 @@ var googleSuccess = function() {
 
             markers.forEach (function (marker) {
                 $.ajax({
-                    url : urlFlickrRequest.replace('%lat%', marker.position.lat).replace('%lon%', marker.position.lng).replace('%tags%', tagList1),
+                    url : urlFlickrRequest.replace('%lat%', marker.position.lat).replace('%lon%', marker.position.lng).replace('%tags%', tagList),
                     success: function(data) {
                         clearTimeout(flickrRequestTimeout);
                         marker.flickrData = [];
-                        for (var k = 0; k < 5; k++) {
-                            var tmp = data.photos.photo[k];
-                            marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
-                            marker.flickrData[k] = marker.flickrData[k].replace('%id%',tmp.id).replace('%secret%',tmp.secret);
-                        }
-                    }
-                });
-            });
-
-            markers.forEach (function (marker) {
-                $.ajax({
-                    url : urlFlickrRequest.replace('%lat%', marker.position.lat).replace('%lon%', marker.position.lng).replace('%tags%', tagList2),
-                    success: function(data) {
-                        clearTimeout(flickrRequestTimeout);
-                        marker.flickrData = [];
-                        for (var k = 5; k < 10; k++) {
+                        for (var k = 0; k < 3; k++) {
                             var tmp = data.photos.photo[k];
                             marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
                             marker.flickrData[k] = marker.flickrData[k].replace('%id%',tmp.id).replace('%secret%',tmp.secret);
@@ -163,15 +185,15 @@ var googleSuccess = function() {
             //filter list of items
             var str = this.searchString().toLowerCase();
             var tmpArray = [];
-            for (var i = 0; i < this.markerList().length; i++) {
-                if (this.markerList()[i].title.toLowerCase().indexOf(str) != -1) {
-                    tmpArray.push(this.markerList()[i]);
+            for (var i = 0; i < this.generalMarkerList().length; i++) {
+                if (this.generalMarkerList()[i].title.toLowerCase().indexOf(str) != -1) {
+                    tmpArray.push(this.generalMarkerList()[i]);
                 }
             }
             this.currentMarkerList(tmpArray);
 
             //filter markers
-            setMapOnAll(null, this.markerList());
+            setMapOnAll(null, this.generalMarkerList());
             setMapOnAll(this.map, this.currentMarkerList());
 
         };
@@ -187,9 +209,9 @@ var googleSuccess = function() {
             for (var i = 0; i < len; i++) {
                  tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
             }
-            self.markerList(tmpArray);
-            self.getInfoFromWiki(self.markerList());
-            self.getInfoFromFlickr(self.markerList());
+            self.generalMarkerList(tmpArray);
+            self.getInfoFromWiki(self.generalMarkerList());
+            self.getInfoFromFlickr(self.generalMarkerList());
             self.currentMarkerList(tmpArray);
         };
 

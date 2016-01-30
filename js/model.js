@@ -9,15 +9,15 @@ var generalMapData = {
 
     markers : [
     	{
-			position : {lat: 56.307384, lng : 38.15088},
+			position : {lat: 56.307384, lng : 38.13088},
     		title : "Sergiyev Posad"
     	},
     	{
-			position : { lat: 56.165470, lng : 40.402882},
+			position : { lat: 56.135470, lng : 40.402882},
     		title : "Vladimir"
     	},
         {
-            position : { lat: 56.416168, lng : 40.453777},
+            position : { lat: 56.426168, lng : 40.451777},
             title : "Suzdal"
         },
         {
@@ -25,7 +25,7 @@ var generalMapData = {
             title : "Gus-Khrustalny"
         },
         {
-            position : { lat: 56.736716, lng : 38.882745},
+            position : { lat: 56.736716, lng : 38.852745},
             title : "Pereslavl-Zalessky "
         }
 
