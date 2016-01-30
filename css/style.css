@@ -97,8 +97,8 @@ h2 {
 }
 
 #main-container {
-    -webkit-transition-duration: 0.6s;
-    transition-duration: 0.6s;
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
     top: 0;
 }
 
