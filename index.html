@@ -19,12 +19,19 @@
                 </div>
                 <ul class="cities container" data-bind="foreach: currentMarkerList">
                     <li class="cities-item" data-bind="text: title, click: $parent.itemClick"></li>
-                    <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: $parent.isFavourite == true ? 'yellow' : 'white'}"></div>
+                    <div class="cities-item-button" data-bind="click: $parent.cityZoom">➘</div>
+                    <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: isFavourite() == true ? 'orange' : 'white'}"></div>
                     <hr class="full-width">
                 </ul>
+                <div class="container">
+                    <h3 class="full-width">Additional Functions</h3>
+                    <div class="func-icons">⎙</div>
+                    <div class="func-buttons">Print favourites</div>
+                    <div class="func-icons" data-bind="click: centerMap">⚓</div>
+                    <div class="func-buttons" data-bind="click: centerMap" >Initial map position</div>
+                </div>
                 <div id='hide-button' data-bind="text: hideButton, click: hideButtonClick" =></div>
             </div>
-
         </div>
     </div>
 
@@ -35,20 +42,3 @@
     <script src="js/app.js"></script>
 </body>
 </html>
-
-
-
-<!--
-        <ul id="cat-list"></ul>
-    <div id="cat" >
-
-        <h2 id="cat-name" data-bind="text: currentCat().name"></h2>
-        <h3 id="cat-level" data-bind="text: currentCat().level"></h3>
-        <div id="cat-count" data-bind="text: currentCat().clickCount"></div>
-        <img id="cat-img" src="" alt="cute cat" data-bind="click: incrementCounter, attr: {src: currentCat().imgSrc}" >
-        <ul data-bind="foreach: currentCat().nicknames">
-            <li data-bind="text: name"></li>
-        </ul>
-
-    </div>
--->

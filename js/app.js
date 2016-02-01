@@ -42,8 +42,19 @@ var googleSuccess = function() {
             toggleHideButton();
         };
 
+        this.cityZoom = function() {
+            self.map.setZoom(14);
+            self.map.setCenter(this.position);
+        };
+
+        this.centerMap = function() {
+            self.map.setZoom(generalMapData.mapCenter.zoom);
+            self.map.setCenter(generalMapData.mapCenter.position);
+        };
+
+
         this.starButtonClick = function() {
-            
+
             var toggleStar = function(marker) {
                 if (marker.isFavourite() == true) {
                     marker.isFavourite(false);

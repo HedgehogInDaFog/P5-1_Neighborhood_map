@@ -22,12 +22,21 @@ h2 {
     letter-spacing:1.5px;
 }
 
+h3 {
+    font-size: 20px;
+    color: white;
+    margin: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing:1.2px;
+}
+
 
 .abs-container {
     position: absolute;
     left: 0px;
     top: 0px;
-    width: 25%;
+    width: 20%;
     max-width: 600px;
     min-width: 150px;
     height: 100%;
@@ -37,17 +46,18 @@ h2 {
 }
 
 .cities-item {
-    width: 80%;
+    width: 65%;
     color:  white;
-    font-size: 18px;
+    font-size: 20px;
 }
 
 .cities-item-button
 {
     width: 15%;
     color:  white;
-    font-size: 18px;
+    font-size: 24px;
     text-align: right;
+    font-weight: bold;
 }
 
 .container {
@@ -61,6 +71,28 @@ h2 {
 
 .full-width {
     width: 100%;
+}
+
+.func-buttons {
+    width: 80%;
+    color:  white;
+    font-size: 18px;
+    text-decoration: underline;
+    margin-top: auto;
+    margin-bottom: auto;
+    /*background-color: #4A4F69;
+    border-radius: 6px;
+    margin: 10px;
+    margin-left: 5px;*/
+}
+
+.func-icons {
+    width: 10%;
+    color:  white;
+    font-size: 24px;
+   /* margin: 10px;*/
+    margin-left: 20px;
+    text-align: center;
 }
 
 .image-flickr {
@@ -110,6 +142,8 @@ h2 {
 #search-string {
     width: 90%;
     border-radius: 20px;
+    font-size: 16px;
+    padding-left: 20px;
 }
 
 #search-clear {
