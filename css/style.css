@@ -37,14 +37,14 @@ h2 {
 }
 
 .cities-item {
-    width: 85%;
+    width: 65%;
     color:  white;
     font-size: 18px;
 }
 
 .cities-item-button
 {
-    width: 10%;
+    width: 15%;
     color:  white;
     font-size: 18px;
     text-align: right;

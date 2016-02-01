@@ -11,7 +11,7 @@
         <div class="container" id="main-container">
             <div class="items-box">
                 <div id="main-label">
-                    <h2 data-bind="text: mainLabel"></h2>
+                    <h2>Cities to visit</h2>
                 </div>
                 <div class="search container">
                     <input type="text" id="search-string" placeholder="Search..." data-bind="textInput: searchString, event: { 'keyup': filterLocations }">
@@ -19,8 +19,8 @@
                 </div>
                 <ul class="cities container" data-bind="foreach: currentMarkerList">
                     <li class="cities-item" data-bind="text: title, click: $parent.itemClick"></li>
-                    <!--<div class="cities-item-button">★</div>-->
-                    <div class="cities-item-button" data-bind="click: $parent.cityDetails">➘</div>
+                    <div class="cities-item-button">★</div>
+                    <div class="cities-item-button">➘</div>
                     <hr class="full-width">
                 </ul>
                 <div id='hide-button' data-bind="text: hideButton, click: hideButtonClick" =></div>
