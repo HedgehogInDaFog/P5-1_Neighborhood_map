@@ -37,7 +37,7 @@ h2 {
 }
 
 .cities-item {
-    width: 65%;
+    width: 80%;
     color:  white;
     font-size: 18px;
 }
@@ -91,14 +91,19 @@ h2 {
 
 }
 
+#yellowStar {
+    color: yellow;
+    font-size: 100px;
+}
+
 #main-label {
     width: 100%;
     border-radius: 20px;
 }
 
 #main-container {
-    -webkit-transition-duration: 0.6s;
-    transition-duration: 0.6s;
+    -webkit-transition-duration: 0.7s;
+    transition-duration: 0.7s;
     top: 0;
 }
 

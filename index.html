@@ -19,8 +19,7 @@
                 </div>
                 <ul class="cities container" data-bind="foreach: currentMarkerList">
                     <li class="cities-item" data-bind="text: title, click: $parent.itemClick"></li>
-                    <div class="cities-item-button">★</div>
-                    <div class="cities-item-button">➘</div>
+                    <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: $parent.isFavourite == true ? 'yellow' : 'white'}"></div>
                     <hr class="full-width">
                 </ul>
                 <div id='hide-button' data-bind="text: hideButton, click: hideButtonClick" =></div>
