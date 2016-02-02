@@ -19,6 +19,8 @@ var googleSuccess = function() {
 
         this.starButton = ko.observable('★');
 
+        this.showOnlyFavourites = ko.observable(false);
+
         this.contentStringTemplate = '<div class="container"><div class="full-width"><h3>%Label%</h3></div>' +
         '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div>' +
         '<div class="full-width"><img class="image-flickr" src=%Image0% alt="city image"></img>' +
@@ -52,7 +54,6 @@ var googleSuccess = function() {
             self.map.setCenter(generalMapData.mapCenter.position);
         };
 
-
         this.starButtonClick = function() {
 
             var toggleStar = function(marker) {
@@ -64,6 +65,7 @@ var googleSuccess = function() {
             };
 
             toggleStar(this);
+            self.filterLocations();
         };
 
         this.getInfoFromWiki = function(markers) {
@@ -85,7 +87,6 @@ var googleSuccess = function() {
                         marker.wikiData = data;
                     }
                 });
-
             });
         };
 
@@ -175,6 +176,16 @@ var googleSuccess = function() {
                 self.filterLocations();
         };
 
+        this.showFavourites = function() { 
+            if (self.showOnlyFavourites() == false) {
+                self.showOnlyFavourites(true);
+            } else {
+                self.showOnlyFavourites(false);
+            }
+            self.filterLocations();
+            //TODO
+        };
+
         this.filterLocations = function() {
 
             function setMapOnAll(map, markers) {
@@ -185,9 +196,12 @@ var googleSuccess = function() {
             //filter list of items
             var str = this.searchString().toLowerCase();
             var tmpArray = [];
-            for (var i = 0; i < this.markerList().length; i++) {
-                if (this.markerList()[i].title.toLowerCase().indexOf(str) != -1) {
-                    tmpArray.push(this.markerList()[i]);
+            var len = this.markerList().length;
+            for (var i = 0; i < len; i++) {
+                if (self.markerList()[i].title.toLowerCase().indexOf(str) != -1) {
+                    if ((self.markerList()[i].isFavourite() == true) || (self.showOnlyFavourites() == false)) {
+                        tmpArray.push(self.markerList()[i]);
+                    }
                 }
             }
             this.currentMarkerList(tmpArray);

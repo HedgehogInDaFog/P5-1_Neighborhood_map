@@ -25,8 +25,8 @@
                 </ul>
                 <div class="container">
                     <h3 class="full-width">Additional Functions</h3>
-                    <div class="func-icons">⎙</div>
-                    <div class="func-buttons">Print favourites</div>
+                    <div class="func-icons" data-bind="click: showFavourites, style: {color: showOnlyFavourites() == true ? 'orange' : 'white'}">★</div>
+                    <div class="func-buttons" data-bind="click: showFavourites, style: {color: showOnlyFavourites() == true ? 'orange' : 'white'}">Show only favourites</div>
                     <div class="func-icons" data-bind="click: centerMap">⚓</div>
                     <div class="func-buttons" data-bind="click: centerMap" >Initial map position</div>
                 </div>
