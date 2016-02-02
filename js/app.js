@@ -72,7 +72,7 @@ var googleSuccess = function() {
 
             var wikiRequestTimeout = setTimeout(function() {
                 console.log('Data from Wikipedia cannot be loaded');
-                //TODO
+                marker.wikiSuccess = false;
             }, 8000);
 
             markers.forEach (function (marker) {
@@ -80,6 +80,7 @@ var googleSuccess = function() {
                     url : urlWikiRequest.replace('%request%', marker.title),
                     dataType: "jsonp",
                     success: function(data) {
+                        marker.wikiSuccess = true;
                         clearTimeout(wikiRequestTimeout);
                         marker.wikiData = data;
                     }
@@ -91,7 +92,7 @@ var googleSuccess = function() {
         this.getInfoFromFlickr = function(markers) {
 
             var urlFlickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=ec08162143dcb46549ffc0535cdbc2cc&' +
-            '&tags=%tags%&sort=interestingness-desc&per_page=5&content_type=1&' +
+            '&tags=%tags%&sort=interestingness-desc&per_page=3&content_type=1&' +
             'media=photos&nojsoncallback=1&format=json&lat=%lat%&lon=%lon%';
 
             var urlFlirckImageTemplate = 'https://farm%farm-id%.staticflickr.com/%server-id%/%id%_%secret%_q.jpg';
@@ -99,8 +100,7 @@ var googleSuccess = function() {
             var tagList = 'church, monument, square, nature, travel, architecture, city, museum, flowers, holidays';
 
             var flickrRequestTimeout = setTimeout(function() {
-                console.log('Data from flickr cannot be loaded');
-                //TODO
+                marker.flickrSuccess = false;
             }, 8000);
 
             markers.forEach (function (marker) {
@@ -108,8 +108,9 @@ var googleSuccess = function() {
                     url : urlFlickrRequest.replace('%lat%', marker.position.lat).replace('%lon%', marker.position.lng).replace('%tags%', tagList),
                     success: function(data) {
                         clearTimeout(flickrRequestTimeout);
+                        marker.flickrSuccess = true;
                         marker.flickrData = [];
-                        for (var k = 0; k < 5; k++) {
+                        for (var k = 0; k < 3; k++) {
                             var tmp = data.photos.photo[k];
                             marker.flickrData[k] = urlFlirckImageTemplate.replace('%farm-id%',tmp.farm).replace('%server-id%',tmp.server);
                             marker.flickrData[k] = marker.flickrData[k].replace('%id%',tmp.id).replace('%secret%',tmp.secret);
@@ -131,18 +132,28 @@ var googleSuccess = function() {
           return marker;
         };
 
-        this.itemClick = function() {
-            self.markerClick(this);
+        this.markerDataToHTML = function(marker, template) {
+
+            var result = template.replace('%Label%',marker.title);
+            if (marker.wikiSuccess == true) {
+                result = result.replace('%WikiInfo%', marker.wikiData[2][0]);
+                result = result.replace('%WikiLinkText%', marker.wikiData[1][0]).replace('%WikiLinkLoc%', marker.wikiData[3][0]);
+            } else {
+                result = result.replace('%WikiInfo%', 'Sorry, we can\'t get information from Wikipedia :-(');
+                result = result.replace('%WikiLinkText%', '').replace('%WikiLinkLoc%', '');
+            }
+            
+            if (marker.flickrSuccess == true) {
+                result = result.replace('%Image0%',marker.flickrData[0]).replace('%Image1%',marker.flickrData[1]).replace('%Image2%',marker.flickrData[2]);
+            } else {
+                result = result.replace('%Image0%','images/err.png').replace('%Image1%','images/err.png').replace('%Image2%','images/err.png');
+                result = result.replace('city image', 'Images from Flickr cannot be downloaded');
+            }
+
+            return result;
         };
 
         this.markerClick = function (marker) {
-
-            var fillContentTemplate = function(template, marker) {
-                var result = template.replace('%Label%',marker.title).replace('%WikiInfo%', marker.wikiData[2][0]);
-                result = result.replace('%WikiLinkText%', marker.wikiData[1][0]).replace('%WikiLinkLoc%', marker.wikiData[3][0]);
-                result = result.replace('%Image0%',marker.flickrData[0]).replace('%Image1%',marker.flickrData[1]).replace('%Image2%',marker.flickrData[2]);
-                return result;
-            };
 
             self.infoWindowsOpened.forEach(function(infowindow) {
                 infowindow.close();
@@ -151,10 +162,10 @@ var googleSuccess = function() {
             marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function() {marker.setAnimation(null);}, 2000);
 
-            var contentString = fillContentTemplate(self.contentStringTemplate, marker);
             var infowindow = new google.maps.InfoWindow({
-                content: contentString
+                content: self.markerDataToHTML(marker, self.contentStringTemplate)
             });
+
             infowindow.open(self.map, marker);
             self.infoWindowsOpened.push(infowindow);
         };

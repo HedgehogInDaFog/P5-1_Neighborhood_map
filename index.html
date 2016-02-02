@@ -18,7 +18,7 @@
                     <img src="images/icon-1.png" id="search-clear" data-bind="click: clearSearch"></img>
                 </div>
                 <ul class="cities container" data-bind="foreach: currentMarkerList">
-                    <li class="cities-item" data-bind="text: title, click: $parent.itemClick"></li>
+                    <li class="cities-item" data-bind="text: title, click: $parent.markerClick"></li>
                     <div class="cities-item-button" data-bind="click: $parent.cityZoom">➘</div>
                     <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: isFavourite() == true ? 'orange' : 'white'}"></div>
                     <hr class="full-width">
