@@ -13,11 +13,11 @@
                 <div id="main-label">
                     <h2>Cities to visit</h2>
                 </div>
-                <div class="search container">
+                <div class="container">
                     <input type="text" id="search-string" placeholder="Search..." data-bind="textInput: searchString, event: { 'keyup': filterLocations }">
                     <img src="images/icon-1.png" id="search-clear" data-bind="click: clearSearch"></img>
                 </div>
-                <ul class="cities container" data-bind="foreach: currentMarkerList">
+                <ul class="container" data-bind="foreach: currentMarkerList">
                     <li class="cities-item" data-bind="text: title, click: $parent.markerClick"></li>
                     <div class="cities-item-button" data-bind="click: $parent.cityZoom">➘</div>
                     <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: isFavourite() == true ? 'orange' : 'white'}"></div>

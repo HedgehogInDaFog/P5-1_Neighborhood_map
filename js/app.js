@@ -224,8 +224,8 @@ var googleSuccess = function() {
                  tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
             }
             self.markerList(tmpArray);
-            self.getInfoFromWiki(self.markerList());
-            self.getInfoFromFlickr(self.markerList());
+            //self.getInfoFromWiki(self.markerList());
+            //self.getInfoFromFlickr(self.markerList());
             self.currentMarkerList(tmpArray);
         };
 
