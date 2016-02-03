@@ -36,13 +36,6 @@ var generalMapData = {
             position : { lat: 57.765, lng : 40.925},
             title : "Kostroma"
         }
-        /*
-        {
-            position : { lat: 55.995, lng : 37.212},
-            title : "Zelenograd"
-        }
-        */
-
     ]
 };
 

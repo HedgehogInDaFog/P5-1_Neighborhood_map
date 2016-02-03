@@ -1,6 +1,7 @@
 
 var googleError = function() {
-    /*TODO*/
+    var googleErrorHTML = '<div id="google-error"><div id="half-screen"></div><h1>We cannot get data from the Google Maps 😿</h1><h1> Please try again later</h1></div>';
+    $('#map').append(googleErrorHTML);
     console.log("Google Map Load Error");
 };
 
