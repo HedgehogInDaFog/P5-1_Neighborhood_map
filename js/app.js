@@ -1,22 +1,30 @@
-
+/**
+ * @function
+ * @description Manage what happening when Google Map API is no available
+ */
 var googleError = function() {
-    var googleErrorHTML = '<div id="google-error"><div id="half-screen"></div><h1>We cannot get data from the Google Maps 😿</h1>' + 
+    var googleErrorHTML = '<div id="google-error"><div id="half-screen"></div><h1>We cannot get data from the Google Maps 😿</h1>' +
     '<h1> Please try again later</h1></div>';
     $('#map').append(googleErrorHTML);
 };
 
+/**
+ * @function
+ * @description This function is called if Google Map API is available
+ * @description ViewModel is initialized here. Also all KO-bindings are done here
+ */
 var googleSuccess = function() {
 
     var ViewModel = function() {
 
         var self = this;
-        this.map;
-        this.markerList = ko.observableArray([]);
-        this.currentMarkerList = ko.observableArray([]);
-        this.searchString = ko.observable('');
+        this.map;                                               //Google map
+        this.markerList = ko.observableArray([]);               //The list of markers
+        this.currentMarkerList = ko.observableArray([]);        //The list of currently visible markers
+        this.searchString = ko.observable('');                  //Current text in search string
         this.hideButton = ko.observable('▲'); //▼
         this.starButton = ko.observable('★');
-        this.showOnlyFavourites = ko.observable(false);        
+        this.showOnlyFavourites = ko.observable(false);         //Defines we need to show all markers, or only favourites
 
         this.infoWindowsOpened = [];
 
@@ -24,15 +32,23 @@ var googleSuccess = function() {
         '<div class="full-width"><a href="%WikiLinkLoc%">%WikiLinkText%</a><p>%WikiInfo%</p></div>' +
         '<div class="full-width"><img class="image-flickr" src=%Image0% alt="city image"></img>' +
         '<img class="image-flickr" src=%Image1% alt="city image"></img>' +
-        '<img class="image-flickr" src=%Image2% alt="city image"></img></div></div>';
+        '<img class="image-flickr" src=%Image2% alt="city image"></img></div></div>'; //InfoWindow HTML
 
+        /**
+        * @function
+        * @description Initialize map and all markers
+        * @param {object} mapCenter - JSON, containing data about initial map center (see model.js for more details)
+        * @param {object} markers - JSON, containing data about markers
+        */
         this.initMap = function(mapCenter, markers) {
+            //create map
             this.map = new google.maps.Map(document.getElementById('map'), {
                 center: mapCenter.position,
                 zoom: mapCenter.zoom
             });
 
-            len = markers.length;
+            //create markers
+            var len = markers.length;
             var tmpArray = [];
             for (var i = 0; i < len; i++) {
                  tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
@@ -149,7 +165,8 @@ var googleSuccess = function() {
             self.infoWindowsOpened.push(infowindow);
         };
 
-        this.showFavouritesClick = function() { 
+        this.showFavouritesClick = function() {
+
             if (self.showOnlyFavourites() == false) {
                 self.showOnlyFavourites(true);
             } else {
@@ -191,7 +208,7 @@ var googleSuccess = function() {
                 result = result.replace('%WikiInfo%', 'Sorry, we can\'t get information from Wikipedia :-(');
                 result = result.replace('%WikiLinkText%', '').replace('%WikiLinkLoc%', '');
             }
-            
+
             if (marker.flickrSuccess == true) {
                 result = result.replace('%Image0%',marker.flickrData[0]).replace('%Image1%',marker.flickrData[1]).replace('%Image2%',marker.flickrData[2]);
             } else {
