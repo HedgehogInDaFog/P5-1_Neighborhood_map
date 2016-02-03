@@ -1,4 +1,4 @@
-var generalMapData = {
+var mapData = {
 	mapCenter : {
     	position : {
     		lat : 56.236575,
