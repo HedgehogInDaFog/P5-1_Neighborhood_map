@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cities to visit</title>
     <link href="dst/css/style.min.css" rel="stylesheet">
 </head>
@@ -25,14 +26,14 @@
                     <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: isFavourite() == true ? 'orange' : 'white'}"></div>
                     <hr class="full-width">
                 </ul>
-                <div class="container">
+                <div class="container" id="additional-functions">
                     <h3 class="full-width">Additional Functions</h3>
                     <div class="func-icons" data-bind="click: showFavouritesClick, style: {color: showOnlyFavourites() == true ? 'orange' : 'white'}">★</div>
                     <div class="func-buttons" data-bind="click: showFavouritesClick, style: {color: showOnlyFavourites() == true ? 'orange' : 'white'}">Show only favourites</div>
                     <div class="func-icons" data-bind="click: centerMapClick">⚓</div>
                     <div class="func-buttons" data-bind="click: centerMapClick">Initial map position</div>
                 </div>
-                <div id='hide-button' data-bind="text: hideButton, click: hideButtonClick"=></div>
+                <div id='hide-button' data-bind="text: hideButton, click: hideButtonClick"></div>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
  * @function
  * @description Manage what happening when Google Map API is no available

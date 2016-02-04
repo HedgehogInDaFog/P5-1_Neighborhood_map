@@ -52,7 +52,6 @@ h4 {
   width: 25%;
   max-width: 600px;
   min-width: 150px;
-  height: 100%;
   z-index: 5;
 }
 
@@ -79,6 +78,8 @@ h4 {
   max-width: 600px;
   min-width: 150px;
   width: 100%;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }
 
 .full-width {
@@ -102,7 +103,7 @@ h4 {
 }
 
 .image-flickr {
-  width: 30%;
+  width: 27%;
   max-width: 200px;
   margin: 10px;
   max-height: 200px;
@@ -208,8 +209,14 @@ h4 {
   .cities-item-button,
   .cities-item,
   .func-icons,
-  .func-buttons {
+  .func-buttons,
+  #search-string {
     font-size: 14px;
+  }
+
+  .image-flickr {
+    max-width: 150px;
+    max-height: 150px;
   }
 }
 @media screen and (max-width: 700px) {
@@ -223,7 +230,26 @@ h4 {
   .cities-item-button,
   .cities-item,
   .func-icons,
-  .func-buttons {
+  .func-buttons,
+  #search-string {
     font-size: 12px;
+  }
+
+  .image-flickr {
+    max-width: 100px;
+    max-height: 100px;
+  }
+}
+@media screen and (max-height: 700px) {
+  .items-box {
+    overflow: auto;
+  }
+
+  #additional-functions {
+    display: none;
+  }
+
+  #hide-button {
+    margin-bottom: 0px;
   }
 }

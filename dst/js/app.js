@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
  * @function
  * @description Manage what happening when Google Map API is no available
@@ -287,6 +287,8 @@ var googleSuccess = function() {
 
     ko.applyBindings(new ViewModel());
 };
+'use strict';
+
 var mapData = {
 
 	mapCenter : {
