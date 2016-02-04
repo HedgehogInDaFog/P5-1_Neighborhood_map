@@ -40,6 +40,13 @@ h3 {
     letter-spacing: 1.2px;
 }
 
+h4 {
+    font-size: 16px;
+    color: black;
+    margin: 3px;
+    text-align: center;
+}
+
 .abs-container {
     position: absolute;
     left: 0px;
@@ -186,7 +193,8 @@ h3 {
         font-size: 16px;
     }
 
-    h3 {
+    h3,
+    h4 {
         font-size: 14px;
     }
 
@@ -205,6 +213,7 @@ h3 {
 
     h2,
     h3,
+    h4,
     .cities-item-button,
     .cities-item,
     .func-icons,
