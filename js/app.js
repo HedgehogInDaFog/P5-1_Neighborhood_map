@@ -1,4 +1,15 @@
+/**
+ * @file
+ * Contains most logic of an application, including ViewModel
+ *
+ * @author
+ * Vladimir Vorotnikov
+ * v.s.vorotnikov@gmail.com
+ */
+
+
 'use strict';
+
 /**
  * @function
  * @description Manage what happening when Google Map API is no available
