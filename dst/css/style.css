@@ -47,8 +47,8 @@ h4 {
 
 .abs-container {
   position: absolute;
-  left: 0px;
-  top: 0px;
+  left: 0;
+  top: 0;
   width: 25%;
   max-width: 600px;
   min-width: 150px;
@@ -102,6 +102,36 @@ h4 {
   text-align: center;
 }
 
+.google-error {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 9;
+  background-color: #4a4f69;
+  opacity: 0.8;
+}
+
+.half-screen {
+  width: 100%;
+  height: 35%;
+}
+
+.hide-button {
+  width: 35px;
+  height: 40px;
+  margin-bottom: -20px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #4a4f69;
+  color: white;
+  text-align: center;
+  font-size: 32px;
+}
+
 .image-flickr {
   width: 27%;
   max-width: 200px;
@@ -135,24 +165,6 @@ h4 {
   margin-right: auto;
 }
 
-.google-error {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  z-index: 9;
-  background-color: #4a4f69;
-  opacity: 0.8;
-}
-
-.half-screen {
-  width: 100%;
-  height: 35%;
-}
-
 .main-label {
   width: 100%;
   border-radius: 20px;
@@ -176,20 +188,8 @@ h4 {
   margin: auto;
 }
 
-.map {
+#map {
   height: 100%;
-}
-
-.hide-button {
-  width: 35px;
-  height: 40px;
-  margin-bottom: -20px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #4a4f69;
-  color: white;
-  text-align: center;
-  font-size: 32px;
 }
 
 @media screen and (max-width: 1000px) {
