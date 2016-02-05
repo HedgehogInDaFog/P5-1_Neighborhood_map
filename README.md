@@ -12,6 +12,10 @@ Application shows to a user a number of cities, which, I believe, are interestin
 To run the application, open this [Link](http://truezarathustra.github.io/P5-1_Neighborhood_map/) in your browser. It may takes up to 8 seconds to ge information from third-party resources, so, please, be patient :)
 If something goes wrong, you can try to reload main page. If it doesn't help, please, feel free to write me about your problem
 
+You can also run this application locally. To do that:
+ - download project files from [GitHub](https://github.com/TrueZarathustra/P5-1_Neighborhood_map)
+ - open index.html on your browser
+
 ## Information for Developers
 
 ### Main technologies

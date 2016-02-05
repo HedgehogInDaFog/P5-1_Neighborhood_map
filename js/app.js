@@ -5,8 +5,8 @@
  * @author
  * Vladimir Vorotnikov
  * v.s.vorotnikov@gmail.com
+ *
  */
-
 
 'use strict';
 
@@ -15,7 +15,7 @@
  * @description Manage what happening when Google Map API is no available
  */
 var googleError = function() {
-    var googleErrorHTML = '<div id="google-error"><div id="half-screen"></div><h1>We cannot get data from the Google Maps 😿</h1>' +
+    var googleErrorHTML = '<div class="google-error"><div class="half-screen"></div><h1>We cannot get data from the Google Maps 😿</h1>' +
     '<h1> Please try again later</h1></div>';
     $('#map').append(googleErrorHTML);
 };
@@ -63,7 +63,7 @@ var googleSuccess = function() {
             var len = markers.length;
             var tmpArray = [];
             for (var i = 0; i < len; i++) {
-                 tmpArray.push(this.createMarker(markers[i].position, markers[i].title));
+                 tmpArray.push(this.createMarker(markers[i].position, markers[i].title, markers[i].icon));
             }
             self.markerList(tmpArray);
             self.getInfoFromWiki(self.markerList());
@@ -83,7 +83,6 @@ var googleSuccess = function() {
             var urlWikiRequest = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=%request%&format=json&callback=wikiCallback';
 
             var wikiRequestTimeout = setTimeout(function() {
-                console.log('Data from Wikipedia cannot be loaded');
                 marker.wikiSuccess = false;
             }, 8000);
 
@@ -139,14 +138,17 @@ var googleSuccess = function() {
         /*----------=========Functions, handling user clicks=========---------*/
 
         this.centerMapClick = function() {
-            self.map.setZoom(mapData.mapCenter.zoom);
-            self.map.setCenter(mapData.mapCenter.position);
+            self.mapZoom(mapData.mapCenter.zoom, mapData.mapCenter.position);
         };
 
         this.cityZoomClick = function() {
-            self.map.setZoom(14);
-            self.map.setCenter(this.position);
+            self.mapZoom(14, this.position);
         };
+
+        this.mapZoom = function(zoom, center) {     // functions: centerMapClick, cityZoomClick and mapZoom can be moved to one function with parameters,
+            self.map.setZoom(zoom);                 // but for me this way is more straightforward and understandable: we have separate functions for
+            self.map.setCenter(center);             // handle users clicks and separate function for changing map. Also mapZoom can be used in other
+        };                                          // places of the code
 
         this.clearSearchClick = function() {
                 this.searchString("");
@@ -193,31 +195,22 @@ var googleSuccess = function() {
         };
 
         this.showFavouritesClick = function() {
-
-            if (self.showOnlyFavourites() === false) {
-                self.showOnlyFavourites(true);
-            } else {
-                self.showOnlyFavourites(false);
-            }
+            self.showOnlyFavourites(!self.showOnlyFavourites());
             self.filterLocations();
         };
 
         this.starButtonClick = function() {
-
-            if (this.isFavourite() === true) {
-                this.isFavourite(false);
-            } else {
-                this.isFavourite(true);
-            }
+            this.isFavorite(!this.isFavourite());
             self.filterLocations();
         };
 
         /*----------=========Functions, creating markers and content for them=========---------*/
-        this.createMarker = function(location, title) {
+        this.createMarker = function(location, title, icon) {
           var marker = new google.maps.Marker({
             position: location,
             map: this.map,
             title: title,
+            icon: icon,
             animation: google.maps.Animation.DROP,
             isFavourite: ko.observable(false)
           });
@@ -271,7 +264,8 @@ var googleSuccess = function() {
             * @param {object} markers - List of Google Map Marker for which we set "map"
             */
             function setMapOnAll(map, markers) {
-                for (var i = 0; i < markers.length; i++) {
+                var len = markers.length;
+                for (var i = 0; i < len; i++) {
                     markers[i].setMap(map);
                 }
             }

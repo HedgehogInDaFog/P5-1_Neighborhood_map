@@ -3,22 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cities to visit</title>
     <link href="dst/css/style.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="map"></div>
+    <div class="map"></div>
     <div class="abs-container">
-        <div class="container" id="main-container">
+        <div class="container main container">
             <div class="items-box">
-                <div id="main-label">
+                <div class="main-label">
                     <h2>Cities to visit</h2>
                 </div>
                 <div class="container">
-                    <input type="text" id="search-string" placeholder="Search..." data-bind="textInput: searchString, event: { 'keyup': filterLocations }">
-                    <img src="images/icon-1.png" id="search-clear" data-bind="click: clearSearchClick"></img>
+                    <input type="text" class="search-string" placeholder="Search..." data-bind="textInput: searchString, event: { 'keyup': filterLocations }">
+                    <img src="images/icon-1.png" class="search-clear" data-bind="click: clearSearchClick"></img>
                 </div>
                 <ul class="container" data-bind="foreach: currentMarkerList">
                     <li class="cities-item" data-bind="text: title, click: $parent.markerClick"></li>
@@ -26,14 +26,14 @@
                     <div class="cities-item-button" data-bind="text: $parent.starButton, click: $parent.starButtonClick, style: {color: isFavourite() == true ? 'orange' : 'white'}"></div>
                     <hr class="full-width">
                 </ul>
-                <div class="container" id="additional-functions">
+                <div class="container additional-functions">
                     <h3 class="full-width">Additional Functions</h3>
                     <div class="func-icons" data-bind="click: showFavouritesClick, style: {color: showOnlyFavourites() == true ? 'orange' : 'white'}">★</div>
                     <div class="func-buttons" data-bind="click: showFavouritesClick, style: {color: showOnlyFavourites() == true ? 'orange' : 'white'}">Show only favourites</div>
                     <div class="func-icons" data-bind="click: centerMapClick">⚓</div>
                     <div class="func-buttons" data-bind="click: centerMapClick">Initial map position</div>
                 </div>
-                <div id='hide-button' data-bind="text: hideButton, click: hideButtonClick"></div>
+                <div class='hide-button' data-bind="text: hideButton, click: hideButtonClick"></div>
             </div>
         </div>
     </div>
