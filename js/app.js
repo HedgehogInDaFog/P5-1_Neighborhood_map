@@ -17,7 +17,7 @@
 var googleError = function() {
     var googleErrorHTML = '<div class="google-error"><div class="half-screen"></div><h1>We cannot get data from the Google Maps 😿</h1>' +
     '<h1> Please try again later</h1></div>';
-    $('#map').append(googleErrorHTML);
+    $('.map').append(googleErrorHTML);
 };
 
 /**
@@ -54,7 +54,7 @@ var googleSuccess = function() {
         */
         this.initMap = function(mapCenter, markers) {
             //create map
-            this.map = new google.maps.Map(document.getElementById('map'), {
+            this.map = new google.maps.Map(document.getElementByClassName('map'), {
                 center: mapCenter.position,
                 zoom: mapCenter.zoom
             });
